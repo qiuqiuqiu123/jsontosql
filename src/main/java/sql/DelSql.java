@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class InsertSql implements BaseSql {
+public class DelSql implements BaseSql{
 
     private String tableName;
 
     private List<Field> fields;
 
-    public InsertSql() {
+    public DelSql() {
         fields = new ArrayList<>();
     }
 
@@ -36,16 +36,16 @@ public class InsertSql implements BaseSql {
 
     @Override
     public String produceSql() {
-        StringBuilder keys = new StringBuilder();
-        StringBuilder values = new StringBuilder();
+        StringBuilder condition = new StringBuilder();
         // 字段名创造
         for (Field field : fields) {
-            keys.append(String.format("%s,",field.getName()));
-            values.append(String.format("'%s',",field.getValue()));
+            if (condition.length() == 0) {
+                condition.append("where ");
+            } else {
+                condition.append("and ");
+            }
+            condition.append(String.format("%s = '%s' ",field.getName(),field.getValue()));
         }
-        // 去掉最后一个逗号
-        keys.replace(keys.length() - 1, keys.length(), "");
-        values.replace(values.length() - 1, values.length(), "");
-        return String.format("insert into %s (%s) values(%s);", tableName, keys, values);
+        return String.format("delete table %s %s;", tableName,condition);
     }
 }

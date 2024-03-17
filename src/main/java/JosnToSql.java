@@ -2,6 +2,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import sql.BaseSql;
 import sql.CreateTableSql;
+import sql.DelSql;
 import sql.InsertSql;
 
 import java.io.*;
@@ -36,6 +37,10 @@ public class JosnToSql {
     public static void main(String[] args) throws IOException {
         JosnToSql josnToSql = new JosnToSql();
         // josnToSql.transfer("E:\\javaLearning\\sqljson.json","E:\\javaLearning\\sql.sql",new CreateTableSql());
-        josnToSql.transfer("E:\\javaLearning\\insertsqljson.json","E:\\javaLearning\\insertsql.sql",new InsertSql());
+        // josnToSql.transfer("E:\\javaLearning\\insertsqljson.json","E:\\javaLearning\\insertsql.sql",new InsertSql());
+
+        String from = "E:\\javaLearning\\jsontosqlTest\\delsqljson.json";
+        String to = "E:\\javaLearning\\jsontosqlTest\\delsql.sql";
+        josnToSql.transfer(from,to,new DelSql());
     }
 }

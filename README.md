@@ -42,3 +42,21 @@ json文件
 ````
 insert into userInfo (name,id,age) values('Zhang San','123','18')
 ````
+
+#### 3.删除数据 
+json文件
+````
+{
+    "userInfo" : {
+        "id" : "123",
+        "name" : "Zhang San",
+        "age" : "18"
+    }
+}
+````
+
+生成的json文件
+````
+delete table userInfo
+where id = '123' and name = 'Zhang San' and age = '18';
+````
