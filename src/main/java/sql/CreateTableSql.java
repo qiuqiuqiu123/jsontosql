@@ -1,3 +1,8 @@
+package sql;
+
+import com.alibaba.fastjson.JSONObject;
+import sql.BaseSql;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,17 +12,14 @@ public class CreateTableSql implements BaseSql {
 
     private String tableName;
 
-    private String engine = "InnoDB";
+    private final String engine = "InnoDB";
 
-    private List<Field> fields;
+    private final List<Field> fields;
 
 
-    private Map<String, String> typeMapping;
+    private static final Map<String, String> typeMapping = new HashMap<>();
 
-    public CreateTableSql(String tableName) {
-        this.tableName = tableName;
-        this.fields = new ArrayList<>();
-        typeMapping = new HashMap<>();
+    static {
         typeMapping.put("String", "varchar(255)");
         typeMapping.put("int", "int");
         typeMapping.put("Integer", "int");
@@ -30,8 +32,29 @@ public class CreateTableSql implements BaseSql {
         typeMapping.put("Date", "datetime");
     }
 
+    public CreateTableSql() {
+        this.fields = new ArrayList<>();
+    }
+
     public void addField(Field field) {
         fields.add(field);
+    }
+
+    @Override
+    public void init(JSONObject jsonObject) {
+        for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
+            this.tableName = entry.getKey();
+        }
+        System.out.println("init table name success");
+        JSONObject fieldJosn = jsonObject.getJSONObject(tableName);
+        for (Map.Entry<String, Object> entry : fieldJosn.entrySet()) {
+            Field field = Field.builder()
+                    .name(entry.getKey())
+                    .type((String) entry.getValue())
+                    .build();
+            addField(field);
+        }
+        System.out.println("build create sql success");
     }
 
     @Override
