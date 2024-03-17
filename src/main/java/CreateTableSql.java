@@ -7,7 +7,10 @@ public class CreateTableSql implements BaseSql {
 
     private String tableName;
 
+    private String engine = "InnoDB";
+
     private List<Field> fields;
+
 
     private Map<String, String> typeMapping;
 
@@ -15,13 +18,16 @@ public class CreateTableSql implements BaseSql {
         this.tableName = tableName;
         this.fields = new ArrayList<>();
         typeMapping = new HashMap<>();
-        typeMapping.put("String","varchar(255)");
-        typeMapping.put("int","int");
-        typeMapping.put("Integer","int");
-        typeMapping.put("long","bigint");
-        typeMapping.put("Long","bigint");
-        typeMapping.put("short","smallint");
-        typeMapping.put("Short","smallint");
+        typeMapping.put("String", "varchar(255)");
+        typeMapping.put("int", "int");
+        typeMapping.put("Integer", "int");
+        typeMapping.put("long", "bigint");
+        typeMapping.put("Long", "bigint");
+        typeMapping.put("short", "smallint");
+        typeMapping.put("Short", "smallint");
+        typeMapping.put("boolean", "tinyint");
+        typeMapping.put("Boolean", "tinyint");
+        typeMapping.put("Date", "datetime");
     }
 
     public void addField(Field field) {
@@ -38,6 +44,6 @@ public class CreateTableSql implements BaseSql {
         }
         // 把最后一个逗号去掉,留下后面的换行符
         sqlFields.replace(sqlFields.length() - 2, sqlFields.length() - 1, "");
-        return String.format("CREATE TABLE `%s` (\n%s)ENGINE=InnoDB", tableName, sqlFields);
+        return String.format("CREATE TABLE `%s` (\n%s)ENGINE=%s;", tableName, sqlFields, engine);
     }
 }

@@ -4,6 +4,10 @@ public class Field {
 
     String type;
 
+    boolean notNull;
+
+    boolean autoIncrement;
+
     public Field(String name,String type) {
         this.name = name;
         this.type = type;
